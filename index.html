@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trio Events Mumbai — Luxury Indian Destination Weddings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet" />
+
+  <script type="importmap">
+  {
+    "imports": {
+      "react":            "https://esm.sh/react@18",
+      "react/jsx-runtime":"https://esm.sh/react@18/jsx-runtime",
+      "react-dom/client": "https://esm.sh/react-dom@18/client",
+      "framer-motion":    "https://esm.sh/framer-motion@11"
+    }
+  }
+  </script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: hsl(43,25%,97%);
+      color: hsl(20,10%,8%);
+      cursor: none;
+      -webkit-font-smoothing: antialiased;
+    }
+    a, button, [role="button"], input, textarea, select, label { cursor: none; }
+
+    :root {
+      --primary: hsl(43,67%,44%);
+      --primary-rgb: 190,152,67;
+      --bg: hsl(43,25%,97%);
+      --fg: hsl(20,10%,8%);
+      --border: hsl(43,25%,84%);
+      --card: hsl(43,20%,94%);
+      --muted: hsl(210,8%,42%);
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(var(--primary-rgb),.4); }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(var(--primary-rgb),.7); }
+    ::selection { background: rgba(var(--primary-rgb),.3); color: inherit; }
+
+    /* Custom cursor */
+    .cursor-dot {
+      position: fixed; width: 7px; height: 7px;
+      background: var(--primary); border-radius: 50%;
+      pointer-events: none; z-index: 99999;
+      top: 0; left: 0; margin-top: -3.5px; margin-left: -3.5px;
+      will-change: transform;
+    }
+    .cursor-ring {
+      position: fixed; width: 38px; height: 38px;
+      border: 1px solid rgba(var(--primary-rgb),.55); border-radius: 50%;
+      pointer-events: none; z-index: 99998;
+      top: 0; left: 0; margin-top: -19px; margin-left: -19px;
+      will-change: transform;
+      transition: width .35s cubic-bezier(.25,1,.5,1), height .35s cubic-bezier(.25,1,.5,1),
+                  margin .35s cubic-bezier(.25,1,.5,1), background .35s ease, border-color .35s ease, opacity .3s ease;
+    }
+    .cursor-ring.cursor-hover { width:60px; height:60px; margin-top:-30px; margin-left:-30px; background:rgba(var(--primary-rgb),.08); border-color:rgba(var(--primary-rgb),.8); }
+    .cursor-ring.cursor-hidden, .cursor-dot.cursor-hidden { opacity: 0; }
+
+    /* Marquee */
+    @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+    .marquee-track { display:flex; width:max-content; animation:marquee 28s linear infinite; }
+    .marquee-track:hover { animation-play-state:paused; }
+
+    /* Scroll progress */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0; height: 2px;
+      background: var(--primary); z-index: 9999; transform-origin: left;
+    }
+
+    /* No-scrollbar */
+    .no-scrollbar::-webkit-scrollbar { display:none; }
+    .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
+
+    /* Section utility */
+    .section-label {
+      font-size: 10px; letter-spacing: .4em; text-transform: uppercase;
+      color: var(--muted); display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::before { content:''; display:inline-block; width:32px; height:.5px; background:rgba(var(--primary-rgb),.6); }
+    .display-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300; line-height: 1;
+    }
+
+    /* Buttons */
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px; border: 1px solid rgba(255,255,255,.4);
+      color: #fff; font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
+      text-decoration: none; transition: background .4s, color .4s;
+    }
+    .btn-outline:hover { background: #fff; color: #000; }
+    .btn-gold {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px; background: var(--primary);
+      color: #000; font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
+      text-decoration: none; border: none; transition: background .4s;
+    }
+    .btn-gold:hover { background: #fff; }
+
+    /* Form inputs */
+    .form-input {
+      width: 100%; background: transparent; border: none;
+      border-bottom: 1px solid rgba(255,255,255,.15);
+      padding: 12px 0; color: #fff; font-family: 'DM Sans',sans-serif;
+      font-size: 14px; font-weight: 300;
+      outline: none; transition: border-color .3s;
+    }
+    .form-input::placeholder { color: rgba(255,255,255,.25); }
+    .form-input:focus { border-bottom-color: var(--primary); }
+    .form-label {
+      display: block; font-size: 9px; letter-spacing: .3em;
+      text-transform: uppercase; color: rgba(255,255,255,.35);
+      font-family: 'DM Sans',sans-serif; margin-bottom: 8px;
+    }
+
+    /* Lightbox overlay */
+    .lightbox-overlay {
+      position: fixed; inset: 0; z-index: 9000;
+      background: rgba(0,0,0,.97);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* Misc */
+    img { display: block; max-width: 100%; }
+    * { border-color: var(--border); }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" data-type="module" data-presets="react">
+    import React, { useState, useEffect, useRef, useCallback } from 'react';
+    import { createRoot } from 'react-dom/client';
+    import { motion, AnimatePresence, useInView } from 'framer-motion';
+
+    /* ─── IMAGE URLS ─────────────────────────────────────────────── */
+    const IMG = {
+      hero:        'https://i.pinimg.com/originals/b9/82/08/b98208c0a9d562da3b80148fb94e40d6.jpg',
+      udaipur:     'https://i.pinimg.com/originals/6a/18/d6/6a18d6ea3a7978c73c4c57e56b7483ab.jpg',
+      tuscany:     'https://www.italianweddingdesigner.com/wp-content/uploads/2023/12/kfphotography-9-683x1024.jpg',
+      dubai:       'https://images.squarespace-cdn.com/content/v1/537bac83e4b0462bc17bdf84/1486253497633-PO9YX8AKLKKIGFCQJZ92/sofitel-palm-dubai-hindu-wedding-photography_0072.jpg',
+      bali:        'https://images.squarespace-cdn.com/content/v1/6242a4fbf1bd754241cb482c/a438da7c-b357-4d62-afbc-7d02389a890a/0003+INDIAN+WEDDING+PHOTOGRAPHY+BALI+DAN_3861_.jpg',
+      como:        'https://d397bfy4gvgcdm.cloudfront.net/158308-Rishi-Anshul-Ed-Peers-Azure65.jpeg',
+      goa:         'https://belezagoa.com/wp-content/uploads/2023/10/Wedding-Photography-at-Beleza-By-The-Beach-768x1152.jpg',
+      santorini:   'https://weddingsabroadguide.com/wp-content/uploads/rita_ajay_indian_wedding_santorini_marry_me_in_greece_nikos_gogas-7_opt.jpg',
+      cel1:        'https://thumbs.dreamstime.com/b/marigold-flower-decorations-royal-wedding-mehrangarh-fort-jodhpur-rajasthan-india-marigold-flower-decorations-250346963.jpg',
+      cel3:        'https://i.pinimg.com/originals/fb/a1/c5/fba1c515c75f42ead34f91df1c4f0051.jpg',
+      gal_bride:   'https://thumbs.dreamstime.com/b/portrait-beautiful-indian-bride-22405635.jpg',
+      gal_pheras:  'https://i0.wp.com/myold-2c8e1b99-3f8d-49d6-b62f-41b6b7764b1f.s3.amazonaws.com/wp-content/uploads/2019/04/28180747/Indian-Traditions39-Ceremony-506-Christopher-Brock-Photography.jpg?fit=1000,667&ssl=1',
+      gal_mandap:  'https://www.linandjirsa.com/wp-content/uploads/hummingbird-nest-ranch-los-angeles-county-indian-wedding-photography-Mandap-1-1000x668.jpg',
+      gal_pal:     'https://i.pinimg.com/originals/68/6b/49/686b49b13ad9a0bd95c10eba27546c81.jpg',
+      gal_bali2:   'https://images.squarespace-cdn.com/content/v1/6242a4fbf1bd754241cb482c/1f9386a5-ee28-489e-97a4-4a7151721c65/1487+-+MANDAP+DECOR+_+AYANA+BALI+INDIAN+WEDDING+PHOTOGRAPHY-+00917_websize.jpg',
+      gal_san2:    'https://weddingsabroadguide.com/wp-content/uploads/rita_ajay_indian_wedding_santorini_marry_me_in_greece_nikos_gogas-11.jpg',
+    };
+
+    /* ─── SCROLL PROGRESS ───────────────────────────────────────── */
+    function ScrollProgress() {
+      const [w, setW] = useState(0);
+      useEffect(() => {
+        const upd = () => {
+          const el = document.documentElement;
+          const sh = el.scrollHeight - el.clientHeight;
+          setW(sh > 0 ? ((el.scrollTop || document.body.scrollTop) / sh) * 100 : 0);
+        };
+        window.addEventListener('scroll', upd, { passive: true });
+        return () => window.removeEventListener('scroll', upd);
+      }, []);
+      return <div className="scroll-progress" style={{ width: `${w}%` }} aria-hidden="true" />;
+    }
+
+    /* ─── CUSTOM CURSOR ─────────────────────────────────────────── */
+    function CustomCursor() {
+      const dotRef = useRef(null);
+      const ringRef = useRef(null);
+      useEffect(() => {
+        if (window.matchMedia('(pointer: coarse)').matches) return;
+        let mx=-100,my=-100,rx=-100,ry=-100,raf,hovering=false;
+        const mv = e => { mx=e.clientX; my=e.clientY; dotRef.current?.classList.remove('cursor-hidden'); ringRef.current?.classList.remove('cursor-hidden'); };
+        const ml = () => { dotRef.current?.classList.add('cursor-hidden'); ringRef.current?.classList.add('cursor-hidden'); };
+        const me = () => { dotRef.current?.classList.remove('cursor-hidden'); ringRef.current?.classList.remove('cursor-hidden'); };
+        const po = e => {
+          const t = e.target?.closest("a,button,[role='button'],input,textarea,select,label,[data-cursor-hover]");
+          if (t && !hovering) { hovering=true; ringRef.current?.classList.add('cursor-hover'); }
+          else if (!t && hovering) { hovering=false; ringRef.current?.classList.remove('cursor-hover'); }
+        };
+        const anim = () => {
+          rx += (mx-rx)*.1; ry += (my-ry)*.1;
+          if (dotRef.current) dotRef.current.style.transform=`translate(${mx}px,${my}px)`;
+          if (ringRef.current) ringRef.current.style.transform=`translate(${rx}px,${ry}px)`;
+          raf = requestAnimationFrame(anim);
+        };
+        document.addEventListener('mousemove',mv); document.addEventListener('mouseleave',ml);
+        document.addEventListener('mouseenter',me); document.addEventListener('pointerover',po);
+        raf = requestAnimationFrame(anim);
+        return () => { document.removeEventListener('mousemove',mv); document.removeEventListener('mouseleave',ml); document.removeEventListener('mouseenter',me); document.removeEventListener('pointerover',po); cancelAnimationFrame(raf); };
+      },[]);
+      return (<><div ref={dotRef} className="cursor-dot cursor-hidden" aria-hidden="true"/><div ref={ringRef} className="cursor-ring cursor-hidden" aria-hidden="true"/></>);
+    }
+
+    /* ─── INTRO ─────────────────────────────────────────────────── */
+    function Intro() {
+      const [vis, setVis] = useState(true);
+      useEffect(() => { const t = setTimeout(()=>setVis(false),2600); return()=>clearTimeout(t); },[]);
+      return (
+        <AnimatePresence>
+          {vis && (
+            <motion.div initial={{y:0}} exit={{y:'-100%'}} transition={{duration:.85,ease:[.76,0,.24,1],delay:.1}}
+              style={{position:'fixed',inset:0,zIndex:99999,background:'#0a0804',display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column'}} aria-hidden="true">
+              <motion.div initial={{opacity:0,y:18}} animate={{opacity:1,y:0}} transition={{duration:.7,ease:'easeOut',delay:.3}}
+                style={{display:'flex',flexDirection:'column',alignItems:'center',gap:16}}>
+                <div style={{display:'flex',alignItems:'center',gap:12}}>
+                  <span style={{fontSize:11,letterSpacing:'.45em',textTransform:'uppercase',color:'rgba(255,255,255,.4)',fontFamily:'DM Sans,sans-serif',fontWeight:300}}>Est. 2009</span>
+                  <span style={{width:40,height:.5,background:'rgba(201,168,76,.4)',display:'inline-block'}}/>
+                  <span style={{fontSize:11,letterSpacing:'.45em',textTransform:'uppercase',color:'rgba(255,255,255,.4)',fontFamily:'DM Sans,sans-serif',fontWeight:300}}>Mumbai</span>
+                </div>
+                <h1 style={{fontFamily:"'Cormorant Garamond',serif",fontWeight:300,fontSize:'clamp(2.5rem,6vw,4rem)',letterSpacing:'.18em',color:'#fff',textTransform:'uppercase'}}>Trio Events</h1>
+                <motion.div initial={{scaleX:0}} animate={{scaleX:1}} transition={{duration:.8,ease:'easeOut',delay:.9}}
+                  style={{width:80,height:1,background:'#C9A84C',transformOrigin:'left'}}/>
+                <motion.p initial={{opacity:0}} animate={{opacity:.5}} transition={{duration:.6,delay:1.3}}
+                  style={{fontSize:10,letterSpacing:'.5em',textTransform:'uppercase',color:'rgba(255,255,255,.5)',fontFamily:'DM Sans,sans-serif'}}>
+                  Curators of the Extraordinary
+                </motion.p>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      );
+    }
+
+    /* ─── WHATSAPP BUTTON ───────────────────────────────────────── */
+    function WhatsAppButton() {
+      return (
+        <motion.a href="https://wa.me/919820000000?text=Hello%20Trio%20Events%2C%20I%20am%20interested%20in%20planning%20my%20destination%20wedding."
+          target="_blank" rel="noopener noreferrer"
+          initial={{scale:0,opacity:0}} animate={{scale:1,opacity:1}} transition={{duration:.5,delay:3,ease:'easeOut'}}
+          whileHover={{scale:1.08}} whileTap={{scale:.95}}
+          data-cursor-hover aria-label="Chat on WhatsApp"
+          style={{position:'fixed',bottom:28,right:28,zIndex:9990,width:52,height:52,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#25D366,#128C7E)',boxShadow:'0 4px 24px rgba(37,211,102,.4)'}}>
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="white">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          <motion.span animate={{scale:[1,1.4,1]}} transition={{repeat:Infinity,duration:2.5,ease:'easeInOut'}}
+            style={{position:'absolute',inset:0,borderRadius:'50%',background:'rgba(37,211,102,.25)'}}/>
+        </motion.a>
+      );
+    }
+
+    /* ─── MARQUEE ────────────────────────────────────────────────── */
+    const MARQUEE_ITEMS = ['Royal Palaces of Rajasthan','Tuscan Villa Estates','Dubai Skyline Celebrations','Bali Temple Ceremonies','Lake Como Elegance','Goa Shores at Sunset','Santorini Caldera Views','Paris Grandeur','Maldives Island Nuptials','Jaipur Heritage Mandaps'];
+    function Marquee({ dark=false }) {
+      const txt = MARQUEE_ITEMS.flatMap(i=>[i,'✦']).join('  ');
+      const rep = `${txt}  ${txt}  `;
+      return (
+        <div style={{overflow:'hidden',padding:'16px 0',borderTop:`1px solid rgba(255,255,255,.08)`,borderBottom:`1px solid rgba(255,255,255,.08)`,background:dark?'#0d0c0a':'#1a1612'}}>
+          <div className="marquee-track">
+            {[0,1,2,3].map(i=>(
+              <span key={i} style={{whiteSpace:'nowrap',fontSize:10,letterSpacing:'.4em',textTransform:'uppercase',fontFamily:'DM Sans,sans-serif',fontWeight:300,padding:'0 48px',color:dark?'rgba(255,255,255,.3)':'rgba(255,255,255,.35)'}}>
+                {rep}
+              </span>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    /* ─── NAVBAR ─────────────────────────────────────────────────── */
+    const NAV_LINKS = [{name:'Destinations',href:'#portfolio'},{name:'Experiences',href:'#celebrations'},{name:'Gallery',href:'#gallery'},{name:'The Journey',href:'#journey'},{name:'About',href:'#about'}];
+
+    function Navbar() {
+      const [scrolled,setScrolled] = useState(false);
+      const [open,setOpen] = useState(false);
+      useEffect(()=>{ const h=()=>setScrolled(window.scrollY>60); window.addEventListener('scroll',h,{passive:true}); return()=>window.removeEventListener('scroll',h); },[]);
+      const tc = scrolled ? 'hsl(20,10%,8%)' : '#fff';
+      return (
+        <>
+          <motion.nav initial={{y:-80,opacity:0}} animate={{y:0,opacity:1}} transition={{duration:1,ease:[.33,1,.68,1],delay:2.7}}
+            style={{position:'fixed',top:0,left:0,right:0,zIndex:500,transition:'all .5s', padding:scrolled?'12px 0':'20px 0',background:scrolled?'rgba(247,244,240,.97)':'transparent',backdropFilter:scrolled?'blur(12px)':'none',borderBottom:scrolled?'1px solid hsl(43,25%,84%)':'none'}}>
+            <div style={{maxWidth:1600,margin:'0 auto',padding:'0 40px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+              <a href="#" style={{display:'flex',alignItems:'center',gap:10,textDecoration:'none',color:tc,transition:'color .3s'}}>
+                <span style={{fontFamily:"'Cormorant Garamond',serif",fontSize:16,letterSpacing:'.28em',textTransform:'uppercase',fontWeight:300}}>Trio Events</span>
+                <span style={{color:'var(--primary)',fontSize:14}}>✦</span>
+                <span style={{fontSize:10,letterSpacing:'.38em',textTransform:'uppercase',fontWeight:300,opacity:.7}}>Mumbai</span>
+              </a>
+              <div style={{display:'flex',alignItems:'center',gap:32}}>
+                {NAV_LINKS.map(l=>(
+                  <a key={l.name} href={l.href} style={{fontSize:10.5,letterSpacing:'.18em',textTransform:'uppercase',textDecoration:'none',color:tc,transition:'color .3s'}}
+                    onMouseEnter={e=>e.target.style.color='var(--primary)'} onMouseLeave={e=>e.target.style.color=tc}>
+                    {l.name}
+                  </a>
+                ))}
+                <a href="#contact" style={{padding:'8px 20px',border:`1px solid ${scrolled?'rgba(20,14,8,.6)':'rgba(255,255,255,.65)'}`,color:tc,fontSize:10,letterSpacing:'.22em',textTransform:'uppercase',textDecoration:'none',transition:'all .3s'}}>Inquire</a>
+              </div>
+            </div>
+          </motion.nav>
+
+          {open && (
+            <div style={{position:'fixed',inset:0,zIndex:600,background:'rgba(0,0,0,.95)',display:'flex',flexDirection:'column'}}>
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'20px 24px',borderBottom:'1px solid rgba(255,255,255,.08)'}}>
+                <span style={{fontFamily:"'Cormorant Garamond',serif",fontSize:16,letterSpacing:'.28em',textTransform:'uppercase',color:'#fff',fontWeight:300}}>Trio Events ✦ Mumbai</span>
+                <button onClick={()=>setOpen(false)} style={{background:'none',border:'none',color:'rgba(255,255,255,.7)',fontSize:24}}>✕</button>
+              </div>
+              <div style={{flex:1,display:'flex',flexDirection:'column',justifyContent:'center',padding:'0 32px',gap:4}}>
+                {NAV_LINKS.map(l=>(
+                  <a key={l.name} href={l.href} onClick={()=>setOpen(false)} style={{padding:'16px 0',borderBottom:'1px solid rgba(255,255,255,.08)',fontFamily:"'Cormorant Garamond',serif",fontSize:40,color:'#fff',textDecoration:'none',letterSpacing:'.04em'}}>
+                    {l.name}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+        </>
+      );
+    }
+
+    /* ─── HERO ───────────────────────────────────────────────────── */
+    const DEST_GRID = [
+      {name:'Udaipur',   desc:'Royal palace ceremonies at golden hour', img:IMG.udaipur},
+      {name:'Tuscany',   desc:'Indian weddings amidst rolling Italian vineyards', img:IMG.tuscany},
+      {name:'Dubai',     desc:'Skyline grandeur meets Indian tradition', img:IMG.dubai},
+      {name:'Bali',      desc:'Tropical mandap ceremonies in paradise', img:IMG.bali},
+      {name:'Lake Como', desc:'Lakeside celebrations in northern Italy', img:IMG.como},
+      {name:'Goa',       desc:'Barefoot beach weddings at sunset', img:IMG.goa},
+    ];
+    const sc = { hidden:{}, visible:{transition:{staggerChildren:.12,delayChildren:2.8}} };
+    const lr = { hidden:{y:'100%',opacity:0}, visible:{y:0,opacity:1,transition:{duration:.9,ease:[.33,1,.68,1]}} };
+
+    function Hero() {
+      return (
+        <section style={{position:'relative',width:'100%',minHeight:'100dvh',display:'flex',overflow:'hidden',background:'#000'}}>
+          {/* LEFT */}
+          <div style={{position:'relative',width:'60%',minHeight:'100dvh',flexShrink:0,display:'flex',flexDirection:'column'}}>
+            <img src={IMG.hero} alt="Luxury Indian Destination Wedding" style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',objectPosition:'center'}}/>
+            <div style={{position:'absolute',inset:0,background:'linear-gradient(to right,rgba(0,0,0,.8),rgba(0,0,0,.5),rgba(0,0,0,.15))'}}/>
+            <div style={{position:'absolute',inset:0,background:'linear-gradient(to top,rgba(0,0,0,.9),rgba(0,0,0,.15),rgba(0,0,0,.3))'}}/>
+            <div style={{position:'relative',zIndex:20,padding:'120px 40px 0'}}>
+              <motion.div initial={{opacity:0,y:-6}} animate={{opacity:1,y:0}} transition={{duration:.6,delay:2.8}} style={{display:'flex',alignItems:'center',gap:12}}>
+                <span style={{width:32,height:.5,background:'rgba(190,152,67,.7)',display:'inline-block'}}/>
+                <span style={{fontSize:9,letterSpacing:'.38em',textTransform:'uppercase',color:'rgba(255,255,255,.45)',fontFamily:'DM Sans,sans-serif',fontWeight:300}}>Est. 2009 · Mumbai</span>
+              </motion.div>
+            </div>
+            <div style={{flex:1}}/>
+            <div style={{position:'relative',zIndex:20,padding:'0 40px 48px'}}>
+              <motion.div variants={sc} initial="hidden" animate="visible" style={{marginBottom:20,overflow:'hidden'}}>
+                {['Crafting','Destination','Weddings Beyond','Borders'].map((line,i)=>(
+                  <div key={i} style={{overflow:'hidden',lineHeight:1.04}}>
+                    <motion.h1 variants={lr} style={{fontFamily:"'Cormorant Garamond',serif",fontWeight:300,color:'#fff',fontSize:'clamp(2.6rem,5.5vw,4.8rem)',lineHeight:1.04,fontStyle:i===3?'italic':'normal'}}>
+                      {line}{line==='Borders'&&<span style={{color:'var(--primary)',fontSize:'.55em',fontStyle:'normal',marginLeft:8,verticalAlign:'middle'}}>✦</span>}
+                    </motion.h1>
+                  </div>
+                ))}
+              </motion.div>
+              <motion.p initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{duration:.9,delay:3.4}}
+                style={{color:'rgba(255,255,255,.55)',fontSize:13,fontFamily:'DM Sans,sans-serif',fontWeight:300,letterSpacing:'.04em',maxWidth:280,marginBottom:28,lineHeight:1.6}}>
+                Ultra-luxury Indian wedding experiences designed across the world's most iconic destinations.
+              </motion.p>
+              <motion.div initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{duration:.9,delay:3.65}} style={{display:'flex',flexWrap:'wrap',gap:12}}>
+                <a href="#portfolio" className="btn-outline">Explore Destinations →</a>
+                <a href="#contact" className="btn-gold">Begin Planning</a>
+              </motion.div>
+              <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{duration:.8,delay:4}} style={{display:'flex',alignItems:'center',gap:12,marginTop:40}}>
+                <motion.div animate={{y:[0,6,0]}} transition={{repeat:Infinity,duration:2,ease:'easeInOut'}}
+                  style={{width:1,height:32,background:'linear-gradient(to bottom,rgba(255,255,255,.5),transparent)'}}/>
+                <span style={{fontSize:9,letterSpacing:'.35em',textTransform:'uppercase',color:'rgba(255,255,255,.35)',fontFamily:'DM Sans,sans-serif'}}>Scroll</span>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* RIGHT — destination mosaic */}
+          <div style={{width:'40%',flexShrink:0,height:'100dvh',display:'flex'}}>
+            <motion.div initial={{opacity:0,scale:1.03}} animate={{opacity:1,scale:1}} transition={{duration:1.1,delay:2.9}}
+              style={{position:'relative',width:'38%',overflow:'hidden'}}>
+              <img src={DEST_GRID[0].img} alt={DEST_GRID[0].name} style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover'}}/>
+              <div style={{position:'absolute',inset:0,background:'linear-gradient(to top,rgba(0,0,0,.85),rgba(0,0,0,.15),transparent)'}}/>
+              <div style={{position:'absolute',bottom:0,left:0,right:0,padding:12,zIndex:10}}>
+                <p style={{color:'#fff',fontSize:9,letterSpacing:'.22em',textTransform:'uppercase',fontFamily:'DM Sans,sans-serif',fontWeight:500}}>{DEST_GRID[0].name}</p>
+              </div>
+            </motion.div>
+            <div style={{flex:1,height:'100%',display:'flex',flexDirection:'column'}}>
+              <div style={{display:'flex',flex:1}}>
+                {[1,2].map((i,idx)=>(
+                  <motion.div key={i} initial={{opacity:0,scale:1.03}} animate={{opacity:1,scale:1}} transition={{duration:.9,delay:3+idx*.07}}
+                    style={{position:'relative',flex:1,overflow:'hidden',borderLeft:'1px solid rgba(255,255,255,.05)'}}>
+                    <img src={DEST_GRID[i].img} alt={DEST_GRID[i].name} style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover'}}/>
+                    <div style={{position:'absolute',inset:0,background:'linear-gradient(to top,rgba(0,0,0,.8),rgba(0,0,0,.1),transparent)'}}/>
+                    <div style={{position:'absolute',bottom:0,left:0,right:0,padding:10,zIndex:10}}>
+                      <p style={{color:'#fff',fontSize:8,letterSpacing:'.2em',textTransform:'uppercase',fontFamily:'DM Sans,sans-serif',fontWeight:500}}>{DEST_GRID[i].name}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+              <div style={{display:'flex',flex:1,borderTop:'1px solid rgba(255,255,255,.05)'}}>
+                {[3,4,5].map((i,idx)=>(
+                  <motion.div key={i} initial={{opacity:0,scale:1.03}} animate={{opacity:1,scale:1}} transition={{duration:.9,delay:3.1+idx*.07}}
+                    style={{position:'relative',flex:1,overflow:'hidden',borderLeft:idx>0?'1px solid rgba(255,255,255,.05)':'none'}}>
+                    <img src={DEST_GRID[i].img} alt={DEST_GRID[i].name} style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover'}}/>
+                    <div style={{position:'absolute',inset:0,background:'linear-gradient(to top,rgba(0,0,0,.8),rgba(0,0,0,.15),transparent)'}}/>
+                    <div style={{position:'absolute',bottom:0,left:0,right:0,padding:8,zIndex:10}}>
+                      <p style={{color:'#fff',fontSize:8,letterSpacing:'.18em',textTransform:'uppercase',fontFamily:'DM Sans,sans-serif',fontWeight:500}}>{DEST_GRID[i].name}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ─── DESTINATIONS ───────────────────────────────────────────── */
+    const DESTS = [
+      {name:'Udaipur',   country:'Rajasthan, India', tagline:'Royal palace pheras at golden hour',           img:IMG.udaipur,   tag:'Most Requested'},
+      {name:'Tuscany',   country:'Italy',             tagline:'Indian weddings among rolling vineyards',      img:IMG.tuscany,   tag:null},
+      {name:'Dubai',     country:'UAE',               tagline:'Skyline grandeur meets Indian tradition',      img:IMG.dubai,     tag:'Trending'},
+      {name:'Bali',      country:'Indonesia',         tagline:'Tropical mandap ceremonies in paradise',       img:IMG.bali,      tag:null},
+      {name:'Lake Como', country:'Italy',             tagline:'Lakeside celebrations in northern Italy',      img:IMG.como,      tag:null},
+      {name:'Goa',       country:'India',             tagline:'Barefoot beach weddings at sunset',            img:IMG.goa,       tag:null},
+      {name:'Santorini', country:'Greece',            tagline:'Indian celebrations over the Aegean Sea',      img:IMG.santorini, tag:null},
+    ];
+
+    function DestCard({dest, index}) {
+      const ref = useRef(null);
+      const inView = useInView(ref, {once:true,margin:'-40px'});
+      return (
+        <motion.div ref={ref} initial={{opacity:0,y:28}} animate={inView?{opacity:1,y:0}:{}} transition={{duration:.8,delay:index*.08,ease:[.33,1,.68,1]}}
+          style={{flexShrink:0,width:320,cursor:'pointer'}}>
+          <div style={{position:'relative',overflow:'hidden',aspectRatio:'3/4'}}>
+            <img src={dest.img} alt={dest.name} style={{width:'100%',height:'100%',objectFit:'cover',transition:'transform .7s'}}
+              onMouseEnter={e=>e.currentTarget.style.transform='scale(1.06)'} onMouseLeave={e=>e.currentTarget.style.transform='scale(1)'}/>
+            <div style={{position:'absolute',inset:0,background:'linear-gradient(to top,rgba(0,0,0,.85),rgba(0,0,0,.2),rgba(0,0,0,.1))'}}/>
+            {dest.tag&&<div style={{position:'absolute',top:16,left:16,zIndex:10,background:'var(--primary)',color:'#000',fontSize:8,letterSpacing:'.2em',textTransform:'uppercase',padding:'6px 12px',fontFamily:'DM Sans,sans-serif',fontWeight:500}}>{dest.tag}</div>}
+            <div style={{position:'absolute',bottom:0,left:0,right:0,padding:24,zIndex:10}}>
+              <p style={{color:'rgba(255,255,255,.45)',fontSize:9,letterSpacing:'.3em',textTransform:'uppercase',fontFamily:'DM Sans,sans-serif',marginBottom:8}}>{dest.country}</p>
+              <h3 style={{fontFamily:"'Cormorant Garamond',serif",fontSize:32,color:'#fff',fontWeight:300,marginBottom:8,lineHeight:1.1}}>{dest.name}</h3>
+              <p style={{color:'rgba(255,255,255,.6)',fontSize:12,fontFamily:'DM Sans,sans-serif',fontWeight:300,lineHeight:1.5}}>{dest.tagline}</p>
+              <a href="#contact" style={{display:'inline-flex',alignItems:'center',gap:8,marginTop:16,fontSize:9,letterSpacing:'.25em',textTransform:'uppercase',color:'var(--primary)',borderBottom:'1px solid rgba(190,152,67,.5)',paddingBottom:2,textDecoration:'none'}}>Inquire for {dest.name} →</a>
+            </div>
+          </div>
+        </motion.div>
+      );
+    }
+
+    function Destinations() {
+      const ref = useRef(null);
+      const scroll = dir => { if(ref.current) ref.current.scrollBy({left:dir==='right'?380:-380,behavior:'smooth'}); };
+      return (
+        <section id="portfolio" style={{padding:'96px 0',background:'var(--bg)',overflow:'hidden'}}>
+          <div style={{maxWidth:1600,margin:'0 auto'}}>
+            <div style={{padding:'0 40px',marginBottom:56,display:'flex',alignItems:'flex-end',justifyContent:'space-between',flexWrap:'wrap',gap:24}}>
+              <div>
+                <p className="section-label" style={{marginBottom:20}}>The Destination Portfolio</p>
+                <h2 className="display-heading" style={{fontSize:'clamp(2.5rem,5vw,4.5rem)',color:'var(--fg)'}}>Seven <em>Iconic</em><br/>Destinations</h2>
+              </div>
+              <div style={{display:'flex',gap:12}}>
+                <button onClick={()=>scroll('left')} style={{width:40,height:40,border:'1px solid var(--border)',background:'none',fontSize:16,cursor:'none',color:'var(--muted)',transition:'all .2s'}} aria-label="left">←</button>
+                <button onClick={()=>scroll('right')} style={{width:40,height:40,border:'1px solid var(--border)',background:'none',fontSize:16,cursor:'none',color:'var(--muted)',transition:'all .2s'}} aria-label="right">→</button>
+              </div>
+            </div>
+            <div ref={ref} className="no-scrollbar" style={{display:'flex',gap:12,overflowX:'auto',padding:'0 40px 16px',scrollSnapType:'x mandatory'}}>
+              {DESTS.map((d,i)=><div key={d.name} style={{scrollSnapAlign:'start'}}><DestCard dest={d} index={i}/></div>)}
+            </div>
+            <div style={{padding:'0 40px',marginTop:32,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+              <p style={{fontSize:9,letterSpacing:'.3em',textTransform:'uppercase',color:'rgba(66,70,80,.6)',fontFamily:'DM Sans,sans-serif'}}>Drag or scroll to explore all destinations</p>
+              <a href="#contact" style={{fontSize:9,letterSpacing:'.28em',textTransform:'uppercase',color:'var(--primary)',borderBottom:'1px solid rgba(190,152,67,.4)',paddingBottom:2,textDecoration:'none'}}>All Destinations →</a>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ─── CELEBRATIONS ───────────────────────────────────────────── */
+    const EXPS = [
+      {num:'I',   title:'Royal Palace Weddings',          desc:'Grand multi-day celebrations in heritage palaces and forts — Jaipur, Udaipur, Jodhpur, Mysore.', img:IMG.cel1,      wide:true},
+      {num:'II',  title:'Beach & Island Ceremonies',      desc:'Intimate barefoot weddings on private beaches across Goa, Maldives, and Bali.',                   img:IMG.goa,       wide:false},
+      {num:'III', title:'European Destination Weddings',  desc:'Indian traditions celebrated against the backdrop of Tuscany, Santorini, Lake Como, and Paris.',   img:IMG.tuscany,   wide:false},
+      {num:'IV',  title:'Grand Sangeet & Mehendi Nights', desc:'Spectacular pre-wedding celebrations featuring live performances, curated lighting, and bespoke décor.', img:IMG.cel3,  wide:true},
+      {num:'V',   title:'Intimate Luxury Gatherings',     desc:'20–80 guest micro-weddings with hyper-personalised design and exceptional culinary experiences.',  img:IMG.como,      wide:false},
+    ];
+
+    function ExpCard({exp, index, style={}}) {
+      return (
+        <motion.div initial={{opacity:0,y:20}} whileInView={{opacity:1,y:0}} viewport={{once:true,margin:'-50px'}} transition={{duration:.75,delay:index*.08}}
+          style={{position:'relative',overflow:'hidden',cursor:'pointer',...style}}>
+          <img src={exp.img} alt={exp.title} style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',transition:'transform .7s'}}
+            onMouseEnter={e=>e.currentTarget.style.transform='scale(1.06)'} onMouseLeave={e=>e.currentTarget.style.transform='scale(1)'}/>
+          <div style={{position:'absolute',inset:0,background:'linear-gradient(to top,rgba(0,0,0,.85),rgba(0,0,0,.3),rgba(0,0,0,.1))'}}/>
+          <div style={{position:'absolute',top:20,left:20,zIndex:10}}>
+            <span style={{fontFamily:"'Cormorant Garamond',serif",fontSize:28,fontWeight:300,color:'rgba(255,255,255,.25)'}}>{exp.num}</span>
+          </div>
+          <div style={{position:'absolute',bottom:0,left:0,right:0,padding:'20px 24px',zIndex:10}}>
+            <h3 style={{fontFamily:"'Cormorant Garamond',serif",fontSize:22,color:'#fff',fontWeight:300,marginBottom:8,lineHeight:1.3}}>{exp.title}</h3>
+            <a href="#contact" style={{fontSize:9,letterSpacing:'.25em',textTransform:'uppercase',color:'var(--primary)',borderBottom:'1px solid rgba(190,152,67,.5)',paddingBottom:2,textDecoration:'none'}}>Inquire →</a>
+          </div>
+        </motion.div>
+      );
+    }
+
+    function Celebrations() {
+      return (
+        <section id="celebrations" style={{padding:'96px 0',background:'var(--card)',overflow:'hidden'}}>
+          <div style={{maxWidth:1600,margin:'0 auto',padding:'0 40px'}}>
+            <div style={{marginBottom:56,display:'flex',alignItems:'flex-end',justifyContent:'space-between',flexWrap:'wrap',gap:24}}>
+              <div>
+                <p className="section-label" style={{marginBottom:20}}>Signature Experiences</p>
+                <h2 className="display-heading" style={{fontSize:'clamp(2.5rem,5vw,4.5rem)',color:'var(--fg)'}}>Five Ways We<br/><em>Celebrate You</em></h2>
+              </div>
+              <p style={{color:'var(--muted)',fontSize:14,maxWidth:280,lineHeight:1.6,fontWeight:300}}>Each celebration is a singular architectural event, never a template.</p>
+            </div>
+            <div style={{display:'flex',flexDirection:'column',gap:10}}>
+              <div style={{display:'grid',gridTemplateColumns:'2fr 1fr',gap:10}}>
+                <ExpCard exp={EXPS[0]} index={0} style={{height:320}} />
+                <ExpCard exp={EXPS[1]} index={1} style={{height:320}} />
+              </div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 2fr',gap:10}}>
+                <ExpCard exp={EXPS[2]} index={2} style={{height:280}} />
+                <ExpCard exp={EXPS[3]} index={3} style={{height:280}} />
+              </div>
+              <ExpCard exp={EXPS[4]} index={4} style={{height:240}} />
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ─── GALLERY ────────────────────────────────────────────────── */
+    const GALLERY = [
+      {src:IMG.cel1,     title:'Marigold Mehrangarh — Jodhpur',   col:2,row:1},
+      {src:IMG.gal_bride,title:'The Bride — Portrait',             col:1,row:2},
+      {src:IMG.gal_mandap,title:'Sacred Mandap Ceremony',          col:1,row:1},
+      {src:IMG.gal_pheras,title:'Pheras — Sacred Fire Ceremony',   col:2,row:1},
+      {src:IMG.gal_pal,  title:'Udaipur Palace — Golden Hour',     col:1,row:2},
+      {src:IMG.gal_bali2,title:'Bali — Sofitel Beach Mandap',      col:1,row:1},
+      {src:IMG.santorini,title:'Santorini — Aegean Ceremony',      col:2,row:1},
+      {src:IMG.goa,      title:'Goa — Sunset Beach Wedding',       col:1,row:1},
+      {src:IMG.gal_san2, title:'Santorini — Couple Portrait',      col:1,row:1},
+    ];
+
+    function Gallery() {
+      const [lb, setLb] = useState(null);
+      const prev = useCallback(()=>setLb(i=>(i-1+GALLERY.length)%GALLERY.length),[]);
+      const next = useCallback(()=>setLb(i=>(i+1)%GALLERY.length),[]);
+      useEffect(()=>{
+        if(lb===null) return;
+        const h = e => { if(e.key==='Escape') setLb(null); if(e.key==='ArrowLeft') prev(); if(e.key==='ArrowRight') next(); };
+        document.addEventListener('keydown',h);
+        document.body.style.overflow='hidden';
+        return()=>{ document.removeEventListener('keydown',h); document.body.style.overflow=''; };
+      },[lb,prev,next]);
+
+      return (
+        <section id="gallery" style={{padding:'112px 0',background:'#0e0d0b',color:'#fff'}}>
+          <div style={{maxWidth:1600,margin:'0 auto',padding:'0 40px'}}>
+            <div style={{marginBottom:56,display:'flex',justifyContent:'space-between',alignItems:'flex-end',flexWrap:'wrap',gap:24}}>
+              <div>
+                <p style={{fontSize:10,letterSpacing:'.4em',textTransform:'uppercase',color:'rgba(255,255,255,.35)',display:'flex',alignItems:'center',gap:12,marginBottom:16}}>
+                  <span style={{width:32,height:.5,background:'rgba(190,152,67,.6)',display:'inline-block'}}/>The Archives
+                </p>
+                <h2 className="display-heading" style={{fontSize:'clamp(2.5rem,5vw,4.5rem)',color:'#fff'}}>Vogue <em>Weddings</em></h2>
+              </div>
+              <a href="#contact" style={{fontSize:10,letterSpacing:'.25em',textTransform:'uppercase',color:'var(--primary)',borderBottom:'1px solid rgba(190,152,67,.5)',paddingBottom:4,textDecoration:'none'}}>View Full Portfolio →</a>
+            </div>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gridAutoRows:260,gap:8}}>
+              {GALLERY.map((img,i)=>(
+                <motion.div key={i} initial={{opacity:0,y:16}} whileInView={{opacity:1,y:0}} viewport={{once:true,margin:'-40px'}} transition={{duration:.7,delay:i*.06}}
+                  onClick={()=>setLb(i)} style={{position:'relative',overflow:'hidden',cursor:'pointer',gridColumn:img.col===2?'span 2':'span 1',gridRow:img.row===2?'span 2':'span 1'}}>
+                  <img src={img.src} alt={img.title} style={{width:'100%',height:'100%',objectFit:'cover',transition:'transform .7s'}}
+                    onMouseEnter={e=>e.currentTarget.style.transform='scale(1.05)'} onMouseLeave={e=>e.currentTarget.style.transform='scale(1)'}/>
+                  <div style={{position:'absolute',inset:0,background:'rgba(0,0,0,.2)',transition:'background .5s'}}
+                    onMouseEnter={e=>e.currentTarget.style.background='rgba(0,0,0,.55)'} onMouseLeave={e=>e.currentTarget.style.background='rgba(0,0,0,.2)'}/>
+                  <div style={{position:'absolute',bottom:0,left:0,right:0,padding:12}}>
+                    <span style={{fontSize:8,letterSpacing:'.22em',textTransform:'uppercase',color:'rgba(255,255,255,.5)',fontFamily:'DM Sans,sans-serif'}}>{img.title}</span>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+          <AnimatePresence>
+            {lb!==null&&(
+              <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} transition={{duration:.3}}
+                className="lightbox-overlay" onClick={()=>setLb(null)}>
+                <button onClick={()=>setLb(null)} style={{position:'absolute',top:20,right:20,zIndex:10,width:40,height:40,border:'1px solid rgba(255,255,255,.2)',background:'none',color:'#fff',fontSize:18,cursor:'none'}}>✕</button>
+                <button onClick={e=>{e.stopPropagation();prev();}} style={{position:'absolute',left:32,zIndex:10,width:40,height:40,border:'1px solid rgba(255,255,255,.2)',background:'none',color:'#fff',fontSize:20,cursor:'none'}}>‹</button>
+                <motion.div key={lb} initial={{opacity:0,scale:.97}} animate={{opacity:1,scale:1}} exit={{opacity:0,scale:.97}} transition={{duration:.4}}
+                  style={{position:'relative',maxWidth:'80vw',maxHeight:'85vh',margin:'0 48px'}} onClick={e=>e.stopPropagation()}>
+                  <img src={GALLERY[lb].src} alt={GALLERY[lb].title} style={{maxHeight:'80vh',maxWidth:'100%',objectFit:'contain'}}/>
+                  <div style={{position:'absolute',bottom:0,left:0,right:0,background:'linear-gradient(to top,rgba(0,0,0,.7),transparent)',padding:'16px 20px'}}>
+                    <p style={{color:'#fff',fontSize:11,letterSpacing:'.25em',textTransform:'uppercase',fontFamily:'DM Sans,sans-serif'}}>{GALLERY[lb].title}</p>
+                    <p style={{color:'rgba(255,255,255,.45)',fontSize:10,marginTop:4}}>{lb+1} / {GALLERY.length}</p>
+                  </div>
+                </motion.div>
+                <button onClick={e=>{e.stopPropagation();next();}} style={{position:'absolute',right:32,zIndex:10,width:40,height:40,border:'1px solid rgba(255,255,255,.2)',background:'none',color:'#fff',fontSize:20,cursor:'none'}}>›</button>
+                <div style={{position:'absolute',bottom:24,left:'50%',transform:'translateX(-50%)',display:'flex',gap:6}}>
+                  {GALLERY.map((_,i)=>(
+                    <button key={i} onClick={e=>{e.stopPropagation();setLb(i);}} style={{width:i===lb?20:4,height:4,borderRadius:9999,background:i===lb?'var(--primary)':'rgba(255,255,255,.3)',border:'none',cursor:'none',transition:'all .3s'}}/>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </section>
+      );
+    }
+
+    /* ─── JOURNEY ────────────────────────────────────────────────── */
+    const STEPS = [
+      {num:'01',title:'Discovery',        desc:'A private consultation to understand your vision, aesthetic, cultural sensibility, and the emotional core of your celebration.'},
+      {num:'02',title:'Destination Curation',desc:'A handpicked selection of iconic global venues, presented with immersive concept boards tailored to your scale and style.'},
+      {num:'03',title:'Design & Styling', desc:'Bespoke visual identity — from floral architecture and mandap design to ambient lighting and personalized stationery.'},
+      {num:'04',title:'White-Glove Hospitality',desc:'Full concierge services ensuring peerless guest comfort — from first-class transfers to curated welcome gifts.'},
+      {num:'05',title:'Production',       desc:'Flawless on-ground execution by our world-class technical, structural, and culinary engineering teams.'},
+      {num:'06',title:'The Celebration',  desc:'The masterpiece unfolds. You remain a guest at your own wedding. We handle every breath of it.'},
+    ];
+
+    function Journey() {
+      return (
+        <section id="journey" style={{padding:'112px 0',background:'var(--card)',overflow:'hidden'}}>
+          <div style={{maxWidth:1600,margin:'0 auto',padding:'0 40px'}}>
+            <motion.div initial={{opacity:0,y:20}} whileInView={{opacity:1,y:0}} viewport={{once:true,margin:'-80px'}} transition={{duration:.9}} style={{marginBottom:80,maxWidth:640}}>
+              <p className="section-label" style={{marginBottom:24}}>The Process</p>
+              <h2 className="display-heading" style={{fontSize:'clamp(2.5rem,5vw,4.5rem)',color:'var(--fg)'}}>The Journey to <em>Perfection</em></h2>
+            </motion.div>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'48px 48px'}}>
+              {STEPS.map((s,i)=>{
+                const ref=useRef(null); const iv=useInView(ref,{once:true,margin:'-60px'});
+                return (
+                  <motion.div key={s.num} ref={ref} initial={{opacity:0,y:24}} animate={iv?{opacity:1,y:0}:{}} transition={{duration:.8,delay:i*.1,ease:[.33,1,.68,1]}}>
+                    <div style={{display:'flex',alignItems:'flex-start',gap:20,marginBottom:24}}>
+                      <span style={{fontFamily:"'Cormorant Garamond',serif",fontSize:56,fontWeight:300,color:'rgba(20,14,8,.1)',lineHeight:1}}>{s.num}</span>
+                      <div style={{flex:1,paddingTop:12}}><div style={{width:'100%',height:.5,background:'var(--border)'}}/></div>
+                    </div>
+                    <h3 style={{fontFamily:"'Cormorant Garamond',serif",fontSize:26,fontWeight:300,color:'var(--fg)',marginBottom:16}}>{s.title}</h3>
+                    <p style={{color:'var(--muted)',fontSize:14,lineHeight:1.6,fontWeight:300}}>{s.desc}</p>
+                  </motion.div>
+                );
+              })}
+            </div>
+            <motion.div initial={{opacity:0,y:16}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{duration:.8,delay:.4}}
+              style={{marginTop:80,paddingTop:48,borderTop:'1px solid var(--border)',display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:24}}>
+              <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:28,fontWeight:300,fontStyle:'italic',color:'var(--fg)'}}>"We begin with your story, and end with your legend."</p>
+              <a href="#contact" style={{flexShrink:0,padding:'12px 32px',background:'var(--fg)',color:'var(--bg)',fontSize:10,letterSpacing:'.25em',textTransform:'uppercase',textDecoration:'none',transition:'all .3s'}}>Start the Journey</a>
+            </motion.div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ─── TESTIMONIALS ───────────────────────────────────────────── */
+    const TESTIMONIALS = [
+      {quote:'They didn\'t just plan a wedding — they directed a cinematic masterpiece. Every detail at the palace felt effortlessly royal.',author:'Ananya & Rohan Mehta',loc:'Udaipur, Rajasthan · 2024',detail:'3-day celebration · 600 guests'},
+      {quote:'From our villa in Tuscany to the bespoke culinary experiences, their team executed with a level of precision and taste that is truly rare in the industry.',author:'Siddharth & Priya Singhania',loc:'Tuscany, Italy · 2023',detail:'5-day celebration · 220 guests'},
+      {quote:'An immersive, three-day celebration where our guests were treated like royalty. Their aesthetic sensibility is absolutely unmatched.',author:'The Ahuja Family',loc:'Lake Como, Italy · 2024',detail:'3-day celebration · 180 guests'},
+      {quote:'Trio Events transformed our vision into a surreal dreamscape across Dubai\'s skyline. Every transition, every detail — flawless.',author:'Karun & Nisha Kapoor',loc:'Dubai, UAE · 2024',detail:'4-day celebration · 350 guests'},
+    ];
+
+    function Testimonials() {
+      const [active,setActive]=useState(0);
+      const [prog,setProg]=useState(0);
+      const tRef=useRef(null); const pRef=useRef(null);
+
+      const reset=(idx)=>{
+        clearInterval(tRef.current); clearInterval(pRef.current);
+        setProg(0); const st=Date.now();
+        pRef.current=setInterval(()=>setProg(Math.min(((Date.now()-st)/6000)*100,100)),50);
+        tRef.current=setInterval(()=>{setActive(p=>(p+1)%TESTIMONIALS.length);setProg(0);},6000);
+        if(idx!==undefined) setActive(idx);
+      };
+      useEffect(()=>{ reset(); return()=>{ clearInterval(tRef.current); clearInterval(pRef.current); }; },[]);
+      const t=TESTIMONIALS[active];
+
+      return (
+        <section style={{position:'relative',padding:'112px 0',background:'#0e0d0b',overflow:'hidden'}}>
+          <div style={{position:'absolute',inset:0,pointerEvents:'none'}}>
+            <div style={{position:'absolute',top:'50%',left:'25%',width:600,height:600,transform:'translate(-50%,-50%)',background:'rgba(190,152,67,.04)',borderRadius:'50%',filter:'blur(120px)'}}/>
+          </div>
+          <div style={{position:'relative',zIndex:10,maxWidth:1600,margin:'0 auto',padding:'0 40px'}}>
+            <div style={{textAlign:'center',marginBottom:64}}>
+              <p style={{fontSize:10,letterSpacing:'.42em',textTransform:'uppercase',color:'rgba(255,255,255,.25)',fontFamily:'DM Sans,sans-serif',marginBottom:12}}>Client Stories</p>
+              <h2 className="display-heading" style={{fontSize:'clamp(2rem,4vw,3.5rem)',color:'#fff'}}>Voices of <em>Our Families</em></h2>
+            </div>
+            <div style={{maxWidth:800,margin:'0 auto',textAlign:'center'}}>
+              <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:80,lineHeight:1,color:'rgba(190,152,67,.4)',marginBottom:24}}>"</div>
+              <AnimatePresence mode="wait">
+                <motion.div key={active} initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-16}} transition={{duration:.6,ease:'easeOut'}}>
+                  <blockquote style={{fontFamily:"'Cormorant Garamond',serif",fontSize:'clamp(1.3rem,2.5vw,2rem)',color:'rgba(255,255,255,.9)',fontWeight:300,fontStyle:'italic',lineHeight:1.5,marginBottom:40}}>{t.quote}</blockquote>
+                  <div style={{fontSize:12,letterSpacing:'.25em',textTransform:'uppercase',color:'#fff',fontFamily:'DM Sans,sans-serif',marginBottom:8}}>{t.author}</div>
+                  <div style={{fontSize:11,color:'rgba(255,255,255,.35)',fontFamily:'DM Sans,sans-serif',marginBottom:4}}>{t.loc}</div>
+                  <div style={{fontSize:10,letterSpacing:'.2em',textTransform:'uppercase',color:'rgba(190,152,67,.6)',fontFamily:'DM Sans,sans-serif'}}>{t.detail}</div>
+                </motion.div>
+              </AnimatePresence>
+              <div style={{display:'flex',justifyContent:'center',gap:24,marginTop:48}}>
+                {TESTIMONIALS.map((_,i)=>(
+                  <button key={i} onClick={()=>reset(i)} style={{position:'relative',background:'none',border:'none',cursor:'none',display:'flex',flexDirection:'column',alignItems:'center',gap:8}}>
+                    <div style={{width:i===active?40:24,height:1.5,background:i===active?'var(--primary)':'rgba(255,255,255,.2)',transition:'all .3s'}}/>
+                    {i===active&&<div style={{position:'absolute',bottom:-6,left:0,height:1.5,background:'rgba(190,152,67,.4)',width:`${prog}%`,transition:'width .05s linear'}}/>}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <motion.div initial={{opacity:0,y:16}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{duration:.8,delay:.3}}
+              style={{marginTop:80,display:'grid',gridTemplateColumns:'repeat(4,1fr)',border:'1px solid rgba(255,255,255,.08)'}}>
+              {[{label:'Luxury Weddings',value:'200+'},{label:'Countries Celebrated In',value:'12'},{label:'Years of Legacy',value:'15+'},{label:'Avg Guest Satisfaction',value:'4.9★'}].map((s,i)=>(
+                <div key={i} style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'32px 16px',borderLeft:i>0?'1px solid rgba(255,255,255,.06)':'none',textAlign:'center'}}>
+                  <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:36,color:'#fff',fontWeight:300,marginBottom:8}}>{s.value}</div>
+                  <div style={{fontSize:9,letterSpacing:'.3em',textTransform:'uppercase',color:'rgba(255,255,255,.3)',fontFamily:'DM Sans,sans-serif'}}>{s.label}</div>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ─── ABOUT ──────────────────────────────────────────────────── */
+    function useCountUp(target, inView, dur=2200) {
+      const [c,setC]=useState(0);
+      useEffect(()=>{
+        if(!inView) return;
+        const st=Date.now();
+        const t=setInterval(()=>{
+          const e=Date.now()-st; const p=Math.min(e/dur,1); const ea=1-Math.pow(1-p,3);
+          setC(Math.round(ea*target)); if(p>=1) clearInterval(t);
+        },16);
+        return()=>clearInterval(t);
+      },[inView,target,dur]);
+      return c;
+    }
+
+    function Stat({value,suffix,label}) {
+      const ref=useRef(null); const iv=useInView(ref,{once:true,margin:'-60px'}); const c=useCountUp(value,iv);
+      return (
+        <div ref={ref} style={{textAlign:'left'}}>
+          <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:56,fontWeight:300,color:'var(--fg)',lineHeight:1,marginBottom:12}}>{c}{suffix}</div>
+          <div style={{fontSize:9,letterSpacing:'.35em',textTransform:'uppercase',color:'var(--muted)',fontFamily:'DM Sans,sans-serif'}}>{label}</div>
+        </div>
+      );
+    }
+
+    function About() {
+      return (
+        <section id="about" style={{padding:'112px 0',background:'var(--bg)',overflow:'hidden'}}>
+          <div style={{maxWidth:1600,margin:'0 auto',padding:'0 40px'}}>
+            <p className="section-label" style={{marginBottom:64}}>The Brand</p>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'64px 96px',alignItems:'start'}}>
+              <motion.div initial={{opacity:0,x:-24}} whileInView={{opacity:1,x:0}} viewport={{once:true,margin:'-80px'}} transition={{duration:1}} style={{position:'relative'}}>
+                <div style={{aspectRatio:'4/5',overflow:'hidden',position:'relative',zIndex:10}}>
+                  <img src={IMG.hero} alt="Trio Events" style={{width:'100%',height:'100%',objectFit:'cover',objectPosition:'top',transition:'transform .7s'}}
+                    onMouseEnter={e=>e.currentTarget.style.transform='scale(1.03)'} onMouseLeave={e=>e.currentTarget.style.transform='scale(1)'}/>
+                  <div style={{position:'absolute',inset:0,background:'linear-gradient(to top,rgba(0,0,0,.3),transparent)'}}/>
+                </div>
+                <div style={{position:'absolute',top:-20,left:-20,right:0,bottom:0,border:'1px solid rgba(190,152,67,.2)',zIndex:0}}/>
+                <motion.div initial={{opacity:0,y:20}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{duration:.7,delay:.5}}
+                  style={{position:'absolute',bottom:32,right:-32,zIndex:20,background:'var(--bg)',border:'1px solid var(--border)',padding:20,maxWidth:200}}>
+                  <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:36,color:'var(--primary)',fontWeight:300,marginBottom:4}}>15+</div>
+                  <p style={{fontSize:9,letterSpacing:'.3em',textTransform:'uppercase',color:'var(--muted)',fontFamily:'DM Sans,sans-serif'}}>Years of crafting extraordinary celebrations worldwide</p>
+                </motion.div>
+              </motion.div>
+              <motion.div initial={{opacity:0,x:24}} whileInView={{opacity:1,x:0}} viewport={{once:true,margin:'-80px'}} transition={{duration:1,delay:.1}}>
+                <h2 className="display-heading" style={{fontSize:'clamp(2.5rem,4vw,4rem)',color:'var(--fg)',marginBottom:32}}>Curators of the <em>Extraordinary</em></h2>
+                <div style={{color:'var(--muted)',fontSize:15,lineHeight:1.7,fontWeight:300,marginBottom:48}}>
+                  <p style={{marginBottom:20}}>Trio Events Mumbai is an elite destination wedding architecture and design firm. We do not merely plan events — we conceptualize, design, and orchestrate fully immersive luxury experiences that become part of your family's legacy.</p>
+                  <p style={{marginBottom:20}}>For over 15 years, we have served exclusively discerning HNI families across India and the world. Our approach marries India's royal heritage with contemporary global luxury.</p>
+                  <p>From a 20-person intimate ceremony on the Amalfi Coast to a 2,000-guest palace wedding in Jaipur, we bring the same irreplaceable attention to each celebration.</p>
+                </div>
+                <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:24,paddingTop:40,borderTop:'1px solid var(--border)',marginBottom:48}}>
+                  <Stat value={200} suffix="+" label="Luxury Weddings"/>
+                  <Stat value={12} suffix="" label="Global Countries"/>
+                  <Stat value={15} suffix="+" label="Years Legacy"/>
+                </div>
+                <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
+                  {['Royal Rajasthan','Mediterranean','Southeast Asia','UAE','Europe'].map(t=>(
+                    <span key={t} style={{padding:'6px 12px',border:'1px solid var(--border)',fontSize:9,letterSpacing:'.2em',textTransform:'uppercase',color:'var(--muted)',fontFamily:'DM Sans,sans-serif',transition:'all .3s'}}>
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ─── CTA ────────────────────────────────────────────────────── */
+    function CTA() {
+      return (
+        <section style={{position:'relative',minHeight:'70vh',overflow:'hidden',background:'#000',display:'flex',alignItems:'center',justifyContent:'center',padding:'128px 0'}}>
+          <div style={{position:'absolute',inset:0,zIndex:0}}>
+            <img src={IMG.udaipur} alt="Begin your celebration" style={{width:'100%',height:'100%',objectFit:'cover',opacity:.35,objectPosition:'center 30%'}}/>
+            <div style={{position:'absolute',inset:0,background:'linear-gradient(to top,rgba(0,0,0,.95),rgba(0,0,0,.7),rgba(0,0,0,.5))'}}/>
+          </div>
+          <div style={{position:'absolute',top:64,left:0,right:0,display:'flex',justifyContent:'center',zIndex:10}}>
+            <div style={{display:'flex',alignItems:'center',gap:16}}>
+              <div style={{width:64,height:.5,background:'rgba(190,152,67,.3)'}}/>
+              <span style={{fontSize:12,letterSpacing:'.4em',textTransform:'uppercase',color:'rgba(190,152,67,.4)',fontFamily:'DM Sans,sans-serif'}}>Begin</span>
+              <div style={{width:64,height:.5,background:'rgba(190,152,67,.3)'}}/>
+            </div>
+          </div>
+          <div style={{maxWidth:1600,margin:'0 auto',padding:'0 40px',position:'relative',zIndex:10,textAlign:'center'}}>
+            <motion.div initial={{opacity:0,y:30}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{duration:1,ease:[.33,1,.68,1]}}>
+              <h2 className="display-heading" style={{fontSize:'clamp(3rem,8vw,6rem)',color:'#fff',marginBottom:24}}>Begin Your<br/><em style={{color:'rgba(190,152,67,.9)'}}>Celebration</em></h2>
+              <p style={{color:'rgba(255,255,255,.55)',fontSize:15,fontFamily:'DM Sans,sans-serif',fontWeight:300,maxWidth:560,margin:'0 auto 56px',lineHeight:1.6}}>
+                We accept a select number of weddings each year to ensure undivided attention for every family we serve. Inquire today to begin the conversation.
+              </p>
+              <div style={{display:'flex',justifyContent:'center',flexWrap:'wrap',gap:16}}>
+                <a href="mailto:hello@trioevents.in" className="btn-gold" style={{padding:'16px 40px',fontSize:10}}>Schedule a Consultation →</a>
+                <a href="#contact" className="btn-outline" style={{padding:'16px 40px',fontSize:10}}>Send an Inquiry</a>
+              </div>
+              <div style={{marginTop:64,display:'flex',justifyContent:'center',flexWrap:'wrap',gap:32,color:'rgba(255,255,255,.25)',fontSize:9,letterSpacing:'.3em',textTransform:'uppercase',fontFamily:'DM Sans,sans-serif'}}>
+                <span>hello@trioevents.in</span>
+                <span>+91 98200 00000</span>
+                <span>Mumbai, India</span>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ─── FOOTER / CONTACT ───────────────────────────────────────── */
+    function Footer() {
+      const [form,setForm]=useState({coupleNames:'',email:'',phone:'',destination:'',date:'',guests:'',budget:'',vision:''});
+      const [status,setStatus]=useState('idle');
+      const fc = e => setForm(p=>({...p,[e.target.name]:e.target.value}));
+      const fs = e => { e.preventDefault(); setStatus('loading'); setTimeout(()=>setStatus('success'),1400); };
+
+      return (
+        <footer id="contact" style={{background:'#0a0906',color:'#fff',position:'relative',overflow:'hidden'}}>
+          <div style={{position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(to right,transparent,rgba(190,152,67,.5),transparent)'}}/>
+          <div style={{position:'absolute',top:160,left:'25%',width:500,height:500,background:'rgba(190,152,67,.03)',borderRadius:'50%',filter:'blur(140px)',pointerEvents:'none'}}/>
+          <div style={{maxWidth:1600,margin:'0 auto',padding:'0 40px'}}>
+            {/* Form section */}
+            <div style={{padding:'96px 0',borderBottom:'1px solid rgba(255,255,255,.06)'}}>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'64px 96px'}}>
+                <div>
+                  <p style={{fontSize:10,letterSpacing:'.4em',textTransform:'uppercase',color:'rgba(255,255,255,.3)',display:'flex',alignItems:'center',gap:12,marginBottom:28}}>
+                    <span style={{width:32,height:.5,background:'rgba(190,152,67,.5)',display:'inline-block'}}/>Begin the Conversation
+                  </p>
+                  <h2 className="display-heading" style={{fontSize:'clamp(2rem,4vw,3.5rem)',color:'#fff',marginBottom:32}}>Tell Us About<br/><em style={{color:'rgba(190,152,67,.8)'}}>Your Wedding</em></h2>
+                  <p style={{color:'rgba(255,255,255,.4)',fontSize:14,lineHeight:1.7,fontWeight:300,maxWidth:360,marginBottom:40}}>
+                    We accept a select number of weddings each year. Every inquiry receives a personal response from our principal planners within 48 hours.
+                  </p>
+                  {[['✉','hello@trioevents.in','mailto:hello@trioevents.in'],['✆','+91 98200 00000','tel:+919820000000'],['◎','Mumbai · New Delhi · Jaipur',null],['📸','@trioevents.in','https://instagram.com/trioevents.in']].map(([icon,text,href],i)=>(
+                    <div key={i} style={{display:'flex',alignItems:'center',gap:12,marginBottom:16,color:'rgba(255,255,255,.3)',fontSize:11,fontFamily:'DM Sans,sans-serif'}}>
+                      <span style={{color:'rgba(190,152,67,.5)'}}>{icon}</span>
+                      {href?<a href={href} style={{color:'inherit',textDecoration:'none'}}>{text}</a>:<span>{text}</span>}
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  {status==='success'?(
+                    <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',textAlign:'center',padding:'64px 40px',border:'1px solid rgba(255,255,255,.08)'}}>
+                      <div style={{color:'var(--primary)',fontSize:32,marginBottom:24}}>✦</div>
+                      <h3 style={{fontFamily:"'Cormorant Garamond',serif",fontSize:28,fontWeight:300,color:'#fff',marginBottom:16}}>Thank You</h3>
+                      <p style={{color:'rgba(255,255,255,.45)',fontSize:14,fontWeight:300,lineHeight:1.6,maxWidth:280}}>Your inquiry has been received. Our principal planners will reach out within 48 hours.</p>
+                    </div>
+                  ):(
+                    <form onSubmit={fs} style={{display:'flex',flexDirection:'column',gap:28}}>
+                      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:28}}>
+                        <div><label className="form-label">Couple's Names</label><input name="coupleNames" type="text" placeholder="Priya & Arjun" value={form.coupleNames} onChange={fc} required className="form-input"/></div>
+                        <div><label className="form-label">Email Address</label><input name="email" type="email" placeholder="hello@youremail.com" value={form.email} onChange={fc} required className="form-input"/></div>
+                      </div>
+                      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:28}}>
+                        <div><label className="form-label">WhatsApp / Phone</label><input name="phone" type="tel" placeholder="+91 98200 00000" value={form.phone} onChange={fc} className="form-input"/></div>
+                        <div><label className="form-label">Preferred Destination</label>
+                          <select name="destination" value={form.destination} onChange={fc} className="form-input" style={{appearance:'none'}}>
+                            <option value="" style={{background:'#0a0906'}}>Select a destination</option>
+                            {['Udaipur','Tuscany','Dubai','Bali','Lake Como','Goa','Santorini','Open to suggestions'].map(d=><option key={d} value={d} style={{background:'#0a0906'}}>{d}</option>)}
+                          </select>
+                        </div>
+                      </div>
+                      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:28}}>
+                        <div><label className="form-label">Estimated Wedding Date</label><input name="date" type="text" placeholder="Dec 2025 or Muhurt pending" value={form.date} onChange={fc} className="form-input"/></div>
+                        <div><label className="form-label">Guest Count</label><input name="guests" type="text" placeholder="e.g. 200–500 guests" value={form.guests} onChange={fc} className="form-input"/></div>
+                      </div>
+                      <div><label className="form-label">Approximate Budget Range</label>
+                        <select name="budget" value={form.budget} onChange={fc} className="form-input" style={{appearance:'none'}}>
+                          <option value="" style={{background:'#0a0906'}}>Select a range</option>
+                          {['₹50L – ₹1Cr','₹1Cr – ₹2Cr','₹2Cr – ₹5Cr','₹5Cr+','To be discussed'].map(b=><option key={b} value={b} style={{background:'#0a0906'}}>{b}</option>)}
+                        </select>
+                      </div>
+                      <div><label className="form-label">Your Vision</label>
+                        <textarea name="vision" rows={4} placeholder="Describe the feeling, aesthetic, or theme you envision..." value={form.vision} onChange={fc} className="form-input" style={{resize:'none'}}/>
+                      </div>
+                      <button type="submit" disabled={status==='loading'} style={{width:'100%',padding:'16px',background:'var(--primary)',color:'#000',fontSize:10,letterSpacing:'.28em',textTransform:'uppercase',border:'none',cursor:'none',transition:'all .4s',opacity:status==='loading'?.6:1,display:'flex',alignItems:'center',justifyContent:'center',gap:12}}>
+                        {status==='loading'?<><span style={{width:12,height:12,border:'1px solid rgba(0,0,0,.3)',borderTopColor:'#000',borderRadius:'50%',animation:'spin .8s linear infinite',display:'inline-block'}}/>Sending…</>:<>Submit Inquiry →</>}
+                      </button>
+                      <p style={{color:'rgba(255,255,255,.2)',fontSize:9,textAlign:'center',letterSpacing:'.15em',fontFamily:'DM Sans,sans-serif'}}>Your details are held in strict confidence. We never share information with third parties.</p>
+                    </form>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Footer bottom */}
+            <div style={{padding:'64px 0',display:'grid',gridTemplateColumns:'2fr 1fr 1fr',gap:48}}>
+              <div>
+                <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:20}}>
+                  <span style={{fontFamily:"'Cormorant Garamond',serif",fontSize:20,letterSpacing:'.28em',textTransform:'uppercase',fontWeight:300}}>Trio Events</span>
+                  <span style={{color:'var(--primary)',fontSize:14}}>✦</span>
+                  <span style={{fontSize:10,letterSpacing:'.38em',textTransform:'uppercase',fontWeight:300,color:'rgba(255,255,255,.4)'}}>Mumbai</span>
+                </div>
+                <p style={{color:'rgba(255,255,255,.3)',maxWidth:280,fontSize:12,lineHeight:1.6,fontWeight:300,fontFamily:'DM Sans,sans-serif',marginBottom:24}}>Elite destination wedding architects serving discerning HNI families across the globe. Every celebration, a singular masterpiece.</p>
+                <div style={{display:'flex',gap:20}}>
+                  {['Instagram','Pinterest','WhatsApp'].map(s=><a key={s} href="#" style={{fontSize:9,letterSpacing:'.25em',textTransform:'uppercase',color:'rgba(255,255,255,.25)',textDecoration:'none',fontFamily:'DM Sans,sans-serif'}}>{s}</a>)}
+                </div>
+              </div>
+              <div>
+                <h4 style={{fontSize:9,letterSpacing:'.38em',textTransform:'uppercase',color:'rgba(255,255,255,.25)',marginBottom:24,fontFamily:'DM Sans,sans-serif'}}>Navigate</h4>
+                <ul style={{listStyle:'none',display:'flex',flexDirection:'column',gap:12}}>
+                  {['Destinations','Experiences','Gallery','About'].map(l=><li key={l}><a href={`#${l.toLowerCase()}`} style={{color:'rgba(255,255,255,.45)',fontSize:12,textDecoration:'none',fontFamily:'DM Sans,sans-serif',fontWeight:300}}>{l}</a></li>)}
+                </ul>
+              </div>
+              <div>
+                <h4 style={{fontSize:9,letterSpacing:'.38em',textTransform:'uppercase',color:'rgba(255,255,255,.25)',marginBottom:24,fontFamily:'DM Sans,sans-serif'}}>Connect</h4>
+                <ul style={{listStyle:'none',display:'flex',flexDirection:'column',gap:12}}>
+                  <li><a href="mailto:hello@trioevents.in" style={{color:'rgba(255,255,255,.45)',fontSize:12,textDecoration:'none',fontFamily:'DM Sans,sans-serif',fontWeight:300}}>hello@trioevents.in</a></li>
+                  <li><a href="tel:+919820000000" style={{color:'rgba(255,255,255,.45)',fontSize:12,textDecoration:'none',fontFamily:'DM Sans,sans-serif',fontWeight:300}}>+91 98200 00000</a></li>
+                  <li style={{color:'rgba(255,255,255,.25)',fontSize:10,lineHeight:1.6,fontFamily:'DM Sans,sans-serif',marginTop:16}}>Office 12, Maker Maxity,<br/>Bandra-Kurla Complex,<br/>Mumbai 400 051</li>
+                </ul>
+              </div>
+            </div>
+            <div style={{padding:'24px 0',borderTop:'1px solid rgba(255,255,255,.05)',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+              <p style={{color:'rgba(255,255,255,.2)',fontSize:9,letterSpacing:'.15em',textTransform:'uppercase',fontFamily:'DM Sans,sans-serif'}}>© {new Date().getFullYear()} Trio Events Mumbai. All rights reserved.</p>
+              <p style={{color:'rgba(255,255,255,.15)',fontSize:9,letterSpacing:'.15em',textTransform:'uppercase',fontFamily:'DM Sans,sans-serif'}}>Crafted with care · Mumbai, India</p>
+            </div>
+          </div>
+        </footer>
+      );
+    }
+
+    /* ─── APP ────────────────────────────────────────────────────── */
+    function App() {
+      return (
+        <div style={{background:'hsl(43,25%,97%)',minHeight:'100vh',color:'hsl(20,10%,8%)'}}>
+          <Intro/>
+          <CustomCursor/>
+          <ScrollProgress/>
+          <WhatsAppButton/>
+          <Navbar/>
+          <main>
+            <Hero/>
+            <Marquee/>
+            <Destinations/>
+            <Celebrations/>
+            <Marquee dark/>
+            <Gallery/>
+            <Journey/>
+            <Testimonials/>
+            <About/>
+            <CTA/>
+          </main>
+          <Footer/>
+        </div>
+      );
+    }
+
+    createRoot(document.getElementById('root')).render(<App/>);
+  </script>
+
+  <style>
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</body>
+</html>
